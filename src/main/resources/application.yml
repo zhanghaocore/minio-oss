@@ -1,0 +1,62 @@
+server:
+  port: 9009
+  servlet:
+    #指定编码集
+    encoding:
+      force: true
+      enabled: true
+      charset: utf-8
+
+spring:
+  # 服务名
+  application:
+    name: minio-oss
+  # 指定执行环境
+  profiles:
+    active: @profiles.activation@
+  # 全局时间格式化
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  mvc:
+    format:
+      date: yyyy-MM-dd
+  servlet:
+    multipart:
+      # 单个文件大小限制
+      max-file-size: 1GB
+      # 一次请求中所有上传文件总大小限制
+      max-request-size: -1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+    logfile:
+      external-file: ${logging.file.path}/info.log
+
+logging:
+  level:
+    com.alibaba.nacos.client.naming: warn
+  file:
+    path: /www/server/${spring.application.name}/logs
+
+mybatis-plus:
+  # 以下配置均有默认值,可以不设置
+  global-config:
+    db-config:
+      select-strategy: not_empty # 为空则不加入条件
+      update-strategy: not_empty # 为空则不加入条件
+      insert-strategy: not_empty # 为空则不加入条件
+  configuration:
+    map-underscore-to-camel-case: true
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  params: count=countSql
